@@ -131,14 +131,6 @@ class Invoice extends Model
     }
 
     /**
-     * Check if the invoice is overdue.
-     */
-    public function isOverdue(): bool
-    {
-        return $this->due_date && $this->due_date->isPast() && $this->status !== 'paid';
-    }
-
-    /**
      * Mark the invoice as paid.
      */
     public function markAsPaid(): void

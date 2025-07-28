@@ -1,6 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
+@extends('layouts.app')
+
+@section('content')
+<div class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-6">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Edit Portal') }}
@@ -18,7 +21,6 @@
                 </a>
             </div>
         </div>
-    </x-slot>
 
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
@@ -199,4 +201,6 @@
             updatePreview();
         });
     </script>
-</x-app-layout>
+    </div>
+</div>
+@endsection
