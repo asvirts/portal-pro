@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,7 @@ use Illuminate\Support\Str;
 
 class Portal extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'user_id',
         'name',
@@ -78,7 +80,7 @@ class Portal extends Model
             return 'https://' . $this->subdomain . '.portalprohub.com';
         }
         
-        return route('portal.show', $this->slug);
+        return route('portals.show', $this->slug);
     }
 
     public function getBrandingAttribute(): array

@@ -169,9 +169,9 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-medium text-gray-900">Recent Projects</h3>
-                        <button class="text-blue-600 hover:text-blue-500 text-sm font-medium">
+                        <a href="{{ route('portals.projects.index', $portal) }}" class="text-blue-600 hover:text-blue-500 text-sm font-medium">
                             View All Projects
-                        </button>
+                        </a>
                     </div>
                     
                     @if($portal->projects->count() > 0)
@@ -227,9 +227,89 @@
                             <h3 class="mt-2 text-sm font-medium text-gray-900">No projects yet</h3>
                             <p class="mt-1 text-sm text-gray-500">Start by adding your first project to this portal.</p>
                             <div class="mt-6">
-                                <button class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                <a href="{{ route('portals.projects.create', $portal) }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                                     Add Project
-                                </button>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- File Management Section -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-medium text-gray-900">File Management</h3>
+                        <div class="flex space-x-3">
+                            <a href="{{ route('portals.files.create', $portal) }}" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+                                Upload Files
+                            </a>
+                            <a href="{{ route('portals.files.index', $portal) }}" 
+                                class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium">
+                                View All Files
+                            </a>
+                        </div>
+                    </div>
+
+                    @if($portal->files->count() > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach($portal->files->take(6) as $file)
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="flex-shrink-0">
+                                            @if(str_starts_with($file->mime_type, 'image/'))
+                                                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                            @elseif($file->mime_type === 'application/pdf')
+                                                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                </svg>
+                                            @else
+                                                <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                </svg>
+                                            @endif
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">{{ $file->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ number_format($file->size / 1024, 1) }} KB</p>
+                                            <p class="text-xs text-gray-500">{{ $file->created_at->diffForHumans() }}</p>
+                                            @if($file->project)
+                                                <p class="text-xs text-blue-600">{{ $file->project->name }}</p>
+                                            @endif
+                                        </div>
+                                        <div class="flex-shrink-0">
+                                            <a href="{{ route('portals.files.show', [$portal, $file]) }}" 
+                                                class="text-blue-600 hover:text-blue-700 text-xs font-medium">
+                                                View
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        @if($portal->files->count() > 6)
+                            <div class="mt-4 text-center">
+                                <a href="{{ route('portals.files.index', $portal) }}" 
+                                    class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                                    View all {{ $portal->files->count() }} files →
+                                </a>
+                            </div>
+                        @endif
+                    @else
+                        <div class="text-center py-12">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">No files yet</h3>
+                            <p class="mt-1 text-sm text-gray-500">Start by uploading your first file to this portal.</p>
+                            <div class="mt-6">
+                                <a href="{{ route('portals.files.create', $portal) }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                    Upload Files
+                                </a>
                             </div>
                         </div>
                     @endif

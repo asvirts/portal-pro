@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portal;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -11,6 +12,7 @@ use Illuminate\Validation\Rule;
 
 class PortalController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
